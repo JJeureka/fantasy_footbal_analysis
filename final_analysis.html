@@ -394,6 +394,7 @@ View(teams_info_2022_thru_2014_updated)</code></pre>
                                    ifelse(`Team ID` == 9, &quot;Jimmy&quot;,  str_to_title(`Owner First Name`))))
 
 View(teams_info_2022_thru_2014_updated)</code></pre>
+<p>Chart with Average Points For and Points Against</p>
 <pre class="r"><code>teams_info_2022_thru_2014_updated %&gt;%
   group_by(`first_name_lower`) %&gt;%
   summarise(avg_points_against = mean(`Points Against`), avg_points_for = mean(`Points For`)) %&gt;%
@@ -414,11 +415,15 @@ View(teams_info_2022_thru_2014_updated)</code></pre>
 ## 11 James                         1232.          1141.
 ## 12 Brian                         1295.          1134.
 ## 13 Claude                        1244.           898.</code></pre>
+<p>Add a column to main dataset to indicate winner for ease of
+graphing</p>
 <pre class="r"><code>teams_info_2022_thru_2014_updated &lt;- 
   teams_info_2022_thru_2014_updated %&gt;%
   mutate(winner_y_n = ifelse(`Final Rank` == 1, &quot;yes&quot;, &quot;no&quot;))
 
 View(teams_info_2022_thru_2014_updated)</code></pre>
+<p>Graph of Points For and Against per season. Removed player who only
+played a single season</p>
 <pre class="r"><code>scores_over_time_final &lt;- teams_info_2022_thru_2014_updated %&gt;%
   filter(first_name_lower != &quot;Claude&quot;) %&gt;% #removed single season player
   ggplot() +

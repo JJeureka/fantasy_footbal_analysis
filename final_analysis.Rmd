@@ -50,7 +50,7 @@ View(teams_info_2022_thru_2014_updated)
 
 ```
 
-
+Chart with Average Points For and Points Against
 
 ```{r Avg Points For and Against}
 teams_info_2022_thru_2014_updated %>%
@@ -58,6 +58,8 @@ teams_info_2022_thru_2014_updated %>%
   summarise(avg_points_against = mean(`Points Against`), avg_points_for = mean(`Points For`)) %>%
   arrange(desc(avg_points_for))
 ```
+
+Add a column to main dataset to indicate winner for ease of graphing
 
 ```{r Add a column for the winner each season}
 
@@ -68,6 +70,8 @@ teams_info_2022_thru_2014_updated <-
 View(teams_info_2022_thru_2014_updated)
 
 ```
+
+Graph of Points For and Against per season. Removed player who only played a single season
 
 ```{r plots for points for and against}
 
