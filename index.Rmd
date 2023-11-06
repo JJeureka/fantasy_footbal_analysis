@@ -17,7 +17,7 @@ library(readr)
 ```
 
 
-Some data was formatted in Excel. Personal data/usernames were removed.
+I found an Excel file on Reddit that allowed me to use the ESPN Fantasy API to get all league data. Personal data/usernames were removed. Some data was formatted in Excel.
 
 
 ```{r read in the data}
