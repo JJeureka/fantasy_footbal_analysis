@@ -86,5 +86,5 @@ scores_over_time_final <- teams_info_2022_thru_2014_updated %>%
   facet_wrap(~first_name_lower) +
   theme(legend.position = "none")
 
-scores_over_time_final
+scores_over_time_final 
 ```
