@@ -17,7 +17,7 @@ library(readr)
 ```
 
 
-Some data was formatted in Excel. Personal Identifiers were removed.
+Some data was formatted in Excel. Personal data/usernames were removed.
 
 
 ```{r read in the data}
