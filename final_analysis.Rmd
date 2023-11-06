@@ -1,0 +1,86 @@
+---
+title: "Points For and Against"
+author: "John Jurica"
+date: "2023-11-03"
+output: html_document
+---
+
+
+```{r load packages}
+
+library(tidyverse)
+library(readr)
+
+
+```
+
+
+Some data was formatted in Excel. Personal Identifiers were removed.
+
+
+```{r read in the data}
+
+teams_info_2022_thru_2014_updated <- read_csv("teams_info_2022_thru_2014_updated_csv.csv", 
+  col_types = cols(
+    `Team ID` = col_double(),               
+    `Owner First Name` = col_character(),   
+    `Is League Creator` = col_character(),  
+    `Playoff Seed` = col_double(),          
+    `Final Rank` = col_double(),            
+    `Wins` = col_double(),                  
+    `Losses` = col_double(),                
+    `Ties` = col_double(),                  
+    `Points For` = col_double(),            
+    `Points Against` = col_double(),        
+    `Year` = col_double()                   
+  )
+)
+
+View(teams_info_2022_thru_2014_updated)
+```
+
+Standardize First Names
+
+```{r standardizes first names}
+teams_info_2022_thru_2014_updated <- teams_info_2022_thru_2014_updated %>%
+  mutate(first_name_lower = ifelse(`Owner First Name` == "JD" , toupper(`Owner First Name`),
+                                   ifelse(`Team ID` == 9, "Jimmy",  str_to_title(`Owner First Name`))))
+
+View(teams_info_2022_thru_2014_updated)
+
+```
+
+
+
+```{r Avg Points For and Against}
+teams_info_2022_thru_2014_updated %>%
+  group_by(`first_name_lower`) %>%
+  summarise(avg_points_against = mean(`Points Against`), avg_points_for = mean(`Points For`)) %>%
+  arrange(desc(avg_points_for))
+```
+
+```{r Add a column for the winner each season}
+
+teams_info_2022_thru_2014_updated <- 
+  teams_info_2022_thru_2014_updated %>%
+  mutate(winner_y_n = ifelse(`Final Rank` == 1, "yes", "no"))
+
+View(teams_info_2022_thru_2014_updated)
+
+```
+
+```{r plots for points for and against}
+
+scores_over_time_final <- teams_info_2022_thru_2014_updated %>%
+  filter(first_name_lower != "Claude") %>% #removed single season player
+  ggplot() +
+  geom_point(aes(y = `Points For`, x = Year, shape = winner_y_n)) +
+  geom_line(aes(y = `Points For`, x = Year), color = "blue") +
+  geom_point(aes(y = `Points Against`, x = Year, shape = winner_y_n), color = "red") +
+  geom_line(aes(y = `Points Against`, x = Year), color = "red") +
+  labs(title = "Scores per year", subtitle = "Blue = Points For; Red = Points Against; Triangle = Winner", y = "Points") +
+  facet_wrap(~first_name_lower) +
+  theme(legend.position = "none")
+
+scores_over_time_final
+```
