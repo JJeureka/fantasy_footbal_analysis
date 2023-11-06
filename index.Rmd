@@ -1,10 +1,12 @@
 ---
-title: "Points For and Against"
+title: "Fantasy Football Analysis"
 author: "John Jurica"
 date: "2023-11-03"
 output: html_document
 ---
 
+# Welcome to the fantasy football analysis page!
+## I am doing an analysis of fantasy football data from our fantasy football league from 2014 through 2022
 
 ```{r load packages}
 
