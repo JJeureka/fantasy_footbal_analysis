@@ -1,27 +1,22 @@
 ---
-title: "Fantasy Football Analysis"
+title: "Points For and Against"
 author: "John Jurica"
-date: "2023-11-03"
+date: "2024-08-19"
 output: html_document
 ---
 
-# Welcome to the fantasy football analysis page!
-### Below is an analysis of data from our fantasy football league from 2014 through 2022
 
 ```{r load packages}
 
 library(tidyverse)
 library(readr)
 
-
 ```
-
-
-I found an Excel file on Reddit that allowed me to use the ESPN Fantasy API to get all league data. Personal data/usernames were removed. Some data was formatted in Excel. Here is the location of excel file.
-https://drive.google.com/file/d/15gBUrmxOTIB8FQF_qy2BOffLWr6xr4le/view 
+Some data was formatted in Excel. Personal Identifiers were removed.
 
 
 ```{r read in the data}
+
 
 teams_info_2022_thru_2014_updated <- read_csv("teams_info_2022_thru_2014_updated_csv.csv", 
   col_types = cols(
@@ -39,19 +34,18 @@ teams_info_2022_thru_2014_updated <- read_csv("teams_info_2022_thru_2014_updated
   )
 )
 
-View(teams_info_2022_thru_2014_updated)
 ```
 
-Standardize First Names
+Standardizing first names
 
 ```{r standardizes first names}
 teams_info_2022_thru_2014_updated <- teams_info_2022_thru_2014_updated %>%
   mutate(first_name_lower = ifelse(`Owner First Name` == "JD" , toupper(`Owner First Name`),
                                    ifelse(`Team ID` == 9, "Jimmy",  str_to_title(`Owner First Name`))))
 
-View(teams_info_2022_thru_2014_updated)
 
 ```
+
 
 Chart with Average Points For and Points Against
 
@@ -70,7 +64,6 @@ teams_info_2022_thru_2014_updated <-
   teams_info_2022_thru_2014_updated %>%
   mutate(winner_y_n = ifelse(`Final Rank` == 1, "yes", "no"))
 
-View(teams_info_2022_thru_2014_updated)
 
 ```
 
@@ -87,7 +80,10 @@ scores_over_time_final <- teams_info_2022_thru_2014_updated %>%
   geom_line(aes(y = `Points Against`, x = Year), color = "red") +
   labs(title = "Scores per year", subtitle = "Blue = Points For; Red = Points Against; Triangle = Winner", y = "Points") +
   facet_wrap(~first_name_lower) +
-  theme(legend.position = "none")
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, hjust = 1.0),
+        panel.spacing = unit(1, "lines"),
+        aspect.ratio = 1/2)
 
 scores_over_time_final 
 ```
