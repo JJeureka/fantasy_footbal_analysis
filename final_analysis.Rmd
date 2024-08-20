@@ -11,14 +11,12 @@ output: html_document
 library(tidyverse)
 library(readr)
 
-
 ```
-
-
 Some data was formatted in Excel. Personal Identifiers were removed.
 
 
 ```{r read in the data}
+
 
 teams_info_2022_thru_2014_updated <- read_csv("teams_info_2022_thru_2014_updated_csv.csv", 
   col_types = cols(
@@ -36,19 +34,18 @@ teams_info_2022_thru_2014_updated <- read_csv("teams_info_2022_thru_2014_updated
   )
 )
 
-View(teams_info_2022_thru_2014_updated)
 ```
 
-Standardize First Names
+Standardizing first names
 
 ```{r standardizes first names}
 teams_info_2022_thru_2014_updated <- teams_info_2022_thru_2014_updated %>%
   mutate(first_name_lower = ifelse(`Owner First Name` == "JD" , toupper(`Owner First Name`),
                                    ifelse(`Team ID` == 9, "Jimmy",  str_to_title(`Owner First Name`))))
 
-View(teams_info_2022_thru_2014_updated)
 
 ```
+
 
 Chart with Average Points For and Points Against
 
@@ -67,7 +64,6 @@ teams_info_2022_thru_2014_updated <-
   teams_info_2022_thru_2014_updated %>%
   mutate(winner_y_n = ifelse(`Final Rank` == 1, "yes", "no"))
 
-View(teams_info_2022_thru_2014_updated)
 
 ```
 
@@ -84,7 +80,10 @@ scores_over_time_final <- teams_info_2022_thru_2014_updated %>%
   geom_line(aes(y = `Points Against`, x = Year), color = "red") +
   labs(title = "Scores per year", subtitle = "Blue = Points For; Red = Points Against; Triangle = Winner", y = "Points") +
   facet_wrap(~first_name_lower) +
-  theme(legend.position = "none")
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, hjust = 1.0),
+        panel.spacing = unit(1, "lines"),
+        aspect.ratio = 1/2)
 
 scores_over_time_final 
 ```
