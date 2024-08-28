@@ -18,7 +18,7 @@ Some data was formatted in Excel. Personal Identifiers were removed.
 ```{r read in the data}
 
 
-teams_info_2022_thru_2014_updated <- read_csv("teams_info_2022_thru_2014_updated_csv.csv", 
+teams_info_2023_thru_2014_updated <- read_csv("teams_info_2023_thru_2014_updated_csv.csv", 
   col_types = cols(
     `Team ID` = col_double(),               
     `Owner First Name` = col_character(),   
@@ -39,7 +39,7 @@ teams_info_2022_thru_2014_updated <- read_csv("teams_info_2022_thru_2014_updated
 Standardizing first names
 
 ```{r standardizes first names}
-teams_info_2022_thru_2014_updated <- teams_info_2022_thru_2014_updated %>%
+teams_info_2023_thru_2014_updated <- teams_info_2023_thru_2014_updated %>%
   mutate(first_name_lower = ifelse(`Owner First Name` == "JD" , toupper(`Owner First Name`),
                                    ifelse(`Team ID` == 9, "Jimmy",  str_to_title(`Owner First Name`))))
 
@@ -50,7 +50,7 @@ teams_info_2022_thru_2014_updated <- teams_info_2022_thru_2014_updated %>%
 Chart with Average Points For and Points Against
 
 ```{r Avg Points For and Against}
-teams_info_2022_thru_2014_updated %>%
+teams_info_2023_thru_2014_updated %>%
   group_by(`first_name_lower`) %>%
   summarise(avg_points_against = mean(`Points Against`), avg_points_for = mean(`Points For`)) %>%
   arrange(desc(avg_points_for))
@@ -60,8 +60,8 @@ Add a column to main dataset to indicate winner for ease of graphing
 
 ```{r Add a column for the winner each season}
 
-teams_info_2022_thru_2014_updated <- 
-  teams_info_2022_thru_2014_updated %>%
+teams_info_2023_thru_2014_updated <- 
+  teams_info_2023_thru_2014_updated %>%
   mutate(winner_y_n = ifelse(`Final Rank` == 1, "yes", "no"))
 
 
@@ -71,7 +71,7 @@ Graph of Points For and Against per season. Removed player who only played a sin
 
 ```{r plots for points for and against}
 
-scores_over_time_final <- teams_info_2022_thru_2014_updated %>%
+scores_over_time_final <- teams_info_2023_thru_2014_updated %>%
   filter(first_name_lower != "Claude") %>% #removed single season player
   ggplot() +
   geom_point(aes(y = `Points For`, x = Year, shape = winner_y_n)) +
