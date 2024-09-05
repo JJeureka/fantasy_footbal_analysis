@@ -13,13 +13,23 @@ library(readr)
 library(kableExtra)
 
 ```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,   # Hide code
+  message = FALSE, # Hide messages
+  warning = FALSE, # Hide warnings
+  results = 'show' # Hide results
+)
+```
+
 Some data was formatted in Excel. Personal Identifiers were removed.
 
 
 ```{r read in the data}
 
 
-teams1_info_2023_thru_2014_updated <- read_csv("teams1_info_2023_thru_2014_updated_csv.csv", 
+teams1_info_2023_thru_2010_updated <- read_csv("teams1_info_2023_thru_2014_updated_csv.csv", 
   col_types = cols(
     `Team ID` = col_double(),               
     `Owner First Name` = col_character(),   
@@ -37,10 +47,9 @@ teams1_info_2023_thru_2014_updated <- read_csv("teams1_info_2023_thru_2014_updat
 
 ```
 
-Standardizing first names
 
 ```{r standardizes first names}
-teams1_info_2023_thru_2014_updated <- teams1_info_2023_thru_2014_updated %>%
+teams1_info_2023_thru_2010_updated <- teams1_info_2023_thru_2010_updated %>%
   mutate(first_name_lower = str_to_title(`Owner First Name`))
 
 
@@ -49,9 +58,9 @@ teams1_info_2023_thru_2014_updated <- teams1_info_2023_thru_2014_updated %>%
 
 Chart with Average Points For and Points Against
 
-```{r Avg Points For and Against}
+```{r Avg Points For and Against, echo=FALSE} 
 # Create the summary table
-summary_table <- teams1_info_2023_thru_2014_updated %>%
+summary_table <- teams1_info_2023_thru_2010_updated %>%
   group_by(first_name_lower) %>%
   summarise(
     avg_points_against = round(mean(`Points Against`), 2),
@@ -85,23 +94,21 @@ summary_table
 
 ```
 
-Add a column to main dataset to indicate winner for ease of graphing
 
 ```{r Add a column for the winner each season}
 
-teams1_info_2023_thru_2014_updated <- 
-  teams1_info_2023_thru_2014_updated %>%
+teams1_info_2023_thru_2010_updated <- 
+  teams1_info_2023_thru_2010_updated %>%
   mutate(winner_y_n = ifelse(`Final Rank` == 1, "yes", "no"))
 
 
 ```
 
-Graph of Points For and Against per season. Removed player who only played a single season
+Graph of Points For and Against per season.
 
-```{r plots for points for and against}
+```{r plots for points for and against , echo=FALSE}
 
-scores_over_time_final <- teams1_info_2023_thru_2014_updated %>%
-  filter(first_name_lower != "Claude") %>% #removed single season player
+scores_over_time_final <- teams1_info_2023_thru_2010_updated %>%
   ggplot() +
   geom_point(aes(y = `Points For`, x = Year, shape = winner_y_n), color = "blue") +
   geom_line(aes(y = `Points For`, x = Year), color = "blue") +
