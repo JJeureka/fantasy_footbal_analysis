@@ -6,7 +6,7 @@ output: html_document
 ---
 
 
-```{r load packages}
+```{r load packages, echo=FALSE, message=FALSE, warning=FALSE}
 
 library(tidyverse)
 library(readr)
@@ -56,7 +56,7 @@ teams1_info_2023_thru_2010_updated <- teams1_info_2023_thru_2010_updated %>%
 ```
 
 
-Chart with Average Points For and Points Against
+## Chart with Average Points For and Points Against
 
 ```{r Avg Points For and Against, echo=FALSE} 
 # Create the summary table
@@ -104,7 +104,7 @@ teams1_info_2023_thru_2010_updated <-
 
 ```
 
-Graph of Points For and Against per season.
+## Graph of Points For and Against per season.
 
 ```{r plots for points for and against , echo=FALSE}
 
