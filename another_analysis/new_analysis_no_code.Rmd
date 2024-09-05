@@ -104,7 +104,7 @@ teams1_info_2023_thru_2010_updated <-
 
 ```
 
-## Graph of Points For and Against per season.
+## Graph of Points For and Against By Season.
 
 ```{r plots for points for and against , echo=FALSE}
 
